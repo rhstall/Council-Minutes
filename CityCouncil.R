@@ -10,11 +10,6 @@ markdown:
 wrap: sentence
 ---
   
----
-  title: "R Notebook"
-output: html_notebook
----
-  
   
   ```{r}
 library(tokenizers)
