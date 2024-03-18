@@ -1,0 +1,90 @@
+---
+title: "City Council Minutes Text Analysis"
+author: "Russell Stall"
+date: "2024-03-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+library(tokenizers)
+library(text2vec)
+library(readr)
+library(dplyr)
+library(stringr)
+library(purrr)
+library(forcats)
+library(ggplot2)
+library(glmnet)
+library(doParallel)
+library(Matrix)
+library(broom)
+library(tidyr)
+library(tibble)
+library(devtools)
+library(ggrepel)
+library(apcluster)
+library(caret)
+library(tidyverse)
+library(shiny)
+library(textreuse)
+library(ggplot2)
+```
+
+## Import file for Reading
+
+The first thing we need to do is to read and load the files into the system. This is a test using the combined minutes of 2023.
+
+```{r}
+setwd("~/Google Drive/Clemson PDBE/Dissertation/CityCouncilMinutes")
+minutes2023 <- read_file("~/Google Drive/Clemson PDBE/Dissertation/CityCouncilMinutes/2023/x2023.txt")
+#print(minutes2023)
+```
+
+Note: Is there a way to delete the line breaks?
+
+## **Stop Words**
+
+### Remove Headers and Titles
+
+City Council minutes are confused by the number of titles and headings. These need to be removed.
+
+```{r}
+
+stop_words = c("FORMAL MEETING OF CITY COUNCIL",
+               "Greenville City Hall, Council Chambers, 206 S. Main Street",
+               "CALL TO ORDER",
+               "INVOCATION",
+               "APPROVAL OF THE MINUTES",
+               "COMMUNICATIONS / ANNOUNCMENTS FROM THE MAYOR AND COUNCIL",
+               "CITIZENS WISHING TO ADDRESS COUNCIL",
+               "Formal Agenda Minutes",
+               "CONSENT AGENDA",
+               "There will be not discussion of Consent Agenda items unless a Council member",
+               "requests in which event the item in question will be considered separately",
+               "UNFINISHED BUSINESS",
+               " - (Ordinances - Second and Final Reading",
+               "NEW BUSINESS",
+               " - (Resolutions - First and Final Reading",
+               "REGULAR AGENDA",
+               " - (Ordinances - First Reading", 
+               "STAFF REPORTS",
+               "There being no further business, the meeting adjorned at",
+               "MEETING NOTICE POSTED", "AND MEDIA NOTIFIED ON", 
+               "CAMILLA G. PITMAN, MMC", "Certified PLS CITY CLERK")
+              
+stop_words = c("the","to","of","for","br","this","for","in","a","b","and","on","is","by",
+               "that","with","from","as","it","are","have","be","us","an","was","u","i")
+
+print(minutes2023)
+
+```
